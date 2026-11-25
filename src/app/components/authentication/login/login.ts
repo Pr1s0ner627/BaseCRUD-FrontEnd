@@ -1,9 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthEntry } from '../../../services/auth-entry';
 
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
 })
-export class Login {}
+export class Login {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthEntry);
+
+  loginForm = this.fb.nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]]
+  });
+
+  OnSubmit()  {
+    if(this.loginForm.invalid)  {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    this.authService.enter(this.loginForm.getRawValue()).subscribe({
+      next: (response) => {
+        sessionStorage.setItem('accessToken', response.token);
+      }, error: (error) => {
+        console.error('Authentication Failed: ', error);
+      }
+    })
+  }
+}

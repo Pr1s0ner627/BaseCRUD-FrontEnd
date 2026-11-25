@@ -23,11 +23,11 @@ export interface LoginRequest   {
 
 export class AuthEntry {
     private http = inject(HttpClient);
-    private apiURL = `${environment.apiUrl}/auth-entry/entry`;
+    private apiURL = `${environment.apiUrl}/Employee/AuthEntry`;
 
     enter(request: LoginRequest): Observable<AuthEntryResponse>  {
         return this.http.post<AuthEntryResponse>(
-            `${this.apiURL}/AuthEntry`, request, { withCredentials: true }
+            `${this.apiURL}`, request, { withCredentials: true }
         );
     }
 }

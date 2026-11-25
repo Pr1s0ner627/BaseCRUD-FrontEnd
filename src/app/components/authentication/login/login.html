@@ -1,1 +1,24 @@
-<p>login works!</p>
+<div class="login-container">
+    <div class="login-card">
+        <h2>Authentication</h2>
+        <p>Hybrid Method (Cookie and JWT)</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="OnSubmit()">
+            <div class="form-group">
+                <label for="email">Email : </label>
+                <input type="email" id="email" formControlName="email" placeholder="Enter your Email" />
+                @if(loginForm.controls.email.touched && loginForm.controls.email.invalid)   {
+                    <small class="error">Enter a valid email address.</small>
+                }
+            </div>
+            <div class="form-group">
+                <label for="password">Password : </label>
+                <input type="password" id="password" formControlName="password" placeholder="Password" />
+                @if(loginForm.controls.password.touched && loginForm.controls.password.invalid)   {
+                    <small class="error">Invalid Password.</small>
+                }
+            </div>
+            <button type="submit" [disabled]="loginForm.invalid">Sign In</button>
+        </form>
+    </div>
+</div>
