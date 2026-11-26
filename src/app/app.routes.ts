@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: Dashboard
-  // },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./components/dashboard/dashboard').then(m => m.Dashboard)
+  },
   {
     path: 'authentication',
     loadComponent: () => import('./components/authentication/authentication').then(m => m.Authentication)

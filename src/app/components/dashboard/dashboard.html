@@ -1,110 +1,216 @@
-<!--<section class="add-employee">
 
-  <h2>Add New Employee</h2>
+<div class="employee-page">
 
-  <form (ngSubmit)="addEmployee()">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div>
+      <h1>Employee Management</h1>
+      <p>Manage your employee directory and records.</p>
+    </div>
 
-    <p>Employee ID: {{  }}</p><br />
+    <div class="employee-total">
+      <span>Total Employees: </span>
+      <strong>{{ employeeCount() }}</strong>
+    </div>
+  </header>
 
-                      <label>Employee Name: </label><input type="text"
-           name="name"
-           [(ngModel)]="newEmployee.name"
-           placeholder="Employee Name"
-           required /><br />
+  <!-- Add Employee Form -->
+  <section class="add-employee">
+    <h2>Add New Employee</h2>
 
-                      <label>Designation: </label><input type="text"
-           name="designation"
-           [(ngModel)]="newEmployee.designation"
-           placeholder="Designation"
-           required /><br />
+    <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
 
-                      <label>Salary: </label><input type="number"
-           name="salary"
-           [(ngModel)]="newEmployee.salary"
-           placeholder="Salary"
-           required
-           min="1" /><br />
+      <div class="form-grid">
 
-                     <label>Status: </label><select name="status"
-            [(ngModel)]="newEmployee.status">
-      <option value="Active">Active</option>
-      <option value="On Leave">On Leave</option>
-      <option value="Resigned">Resigned</option>
-    </select><br />
+        <div class="form-group">
+          <label for="employeeName">Employee Name</label>
+          <input
+            id="employeeName"
+            type="text"
+            name="name"
+            [(ngModel)]="newEmployee.name"
+            placeholder="Enter employee name"
+            required
+          />
+        </div>
 
-    <button type="submit">Add Employee</button>
+        <div class="form-group">
+          <label for="employeeEmail">Email Address</label>
+          <input
+            id="employeeEmail"
+            type="email"
+            name="email"
+            [(ngModel)]="newEmployee.email"
+            placeholder="Enter email address"
+            required
+            email
+          />
+        </div>
 
-  </form>
+        <div class="form-group">
+          <label for="designation">Designation</label>
+          <input
+            id="designation"
+            type="text"
+            name="designation"
+            [(ngModel)]="newEmployee.designation"
+            placeholder="Enter designation"
+            required
+          />
+        </div>
 
-  @if (formMessage) {
-  <p>{{ formMessage }}</p>
-  }
+        <div class="form-group">
+          <label for="salary">Salary (₹)</label>
+          <input
+            id="salary"
+            type="number"
+            name="salary"
+            [(ngModel)]="newEmployee.salary"
+            placeholder="Enter salary"
+            required
+            min="1"
+          />
+        </div>
 
-</section>
+        <div class="form-group">
+          <label for="departmentId">Department ID</label>
+          <input
+            id="departmentId"
+            type="number"
+            name="departmentId"
+            [(ngModel)]="newEmployee.departmentId"
+            min="1"
+            required
+          />
+        </div>
 
-<section class="dashboard">
+        <div class="form-group">
+          <label for="managerId">Manager ID</label>
+          <input
+            id="managerId"
+            type="number"
+            name="managerId"
+            [(ngModel)]="newEmployee.managerId"
+            min="1"
+          />
+        </div>
 
-  <h1>Employee Dashboard</h1>
+        <div class="form-group">
+          <label for="isActive">Employment Status</label>
+          <select
+            id="isActive"
+            name="isActive"
+            [(ngModel)]="newEmployee.isActive"
+          >
+            <option [ngValue]="true">Active</option>
+            <option [ngValue]="false">Inactive</option>
+          </select>
+        </div>
 
-  <div class="dashboard-summary">
-    <h2>Employee Directory</h2>
-    <p>Total Employees: {{ employeeCount() }}</p>
-  </div>-->
+      </div>
 
-  <!-- Search -->
-  <!--<div class="search-container">
-    <input type="text"
-           [ngModel]="searchText()"
-           (ngModelChange)="searchText.set($event)"
-           placeholder="Search employees by name..." />
-  </div>-->
-
-  <!-- Employee List -->
-  <!--<div class="employee-list">
-
-    @for (employee of filteredEmployees(); track employee.id) {
-
-    <article class="employee-card">
-
-      <div class="employee-info">
-        <h3>{{ employee.name | titlecase }}</h3>
-
-        <p>{{ employee.designation }}</p>
-
-        <p>
-          Salary: {{ employee.salary | currency:'INR':'symbol':'1.0-0' }}
-        </p>
-
-        <p>
-          Salary Level: {{ employee.salary | salaryRange }}
-        </p>
-
-        <p>
-          Status:
-          @if (employee.status === 'Active') {
-          <span [class.active]="true">
-            {{ employee.status }}
-          </span>
-          } @else {
-          <span [class]="employee.status.toLowerCase()">
-            {{ employee.status }}
-          </span>
-          }
-        </p>
-        <button (click)="removeEmployee(employee.id)">
-          Remove
+      <div class="form-actions">
+        <button type="submit" [disabled]="employeeForm.invalid">
+          Add Employee
         </button>
       </div>
 
+    </form>
 
-
-    </article>
-
-    } @empty {
-    <p>No employees found.</p>
+    @if (formMessage) {
+      <p class="form-message">{{ formMessage }}</p>
     }
+  </section>
 
-  </div>
+  <!-- Employee Directory -->
+  <section class="dashboard">
 
-</section>-->
+    <div class="directory-header">
+      <div>
+        <h2>Employee Directory</h2>
+        <p>View and manage registered employees.</p>
+      </div>
 
+      <input
+        type="search"
+        name="searchText"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+        placeholder="Search by employee name..."
+      />
+    </div>
+
+    <!-- Employee Cards -->
+    <div class="employee-list">
+
+      @for (employee of filteredEmployees(); track employee.id) {
+
+        <article class="employee-card">
+
+          <div class="employee-info">
+
+            <div class="employee-heading">
+              <h3>{{ employee.name | titlecase }}</h3>
+
+              <span
+                class="status"
+                [class.active]="employee.isActive"
+                [class.inactive]="!employee.isActive"
+              >
+                {{ employee.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+
+            <p class="designation">{{ employee.designation }}</p>
+
+            <p>
+              <strong>Employee ID:</strong>
+              {{ employee.id }}
+            </p>
+
+            <p>
+              <strong>Email:</strong>
+              {{ employee.email }}
+            </p>
+
+            <p>
+              <strong>Salary:</strong>
+              {{ employee.salary | currency:'INR':'symbol':'1.0-0' }}
+            </p>
+
+            <p>
+              <strong>Department ID:</strong>
+              {{ employee.departmentId }}
+            </p>
+
+            <p>
+              <strong>Manager ID:</strong>
+              {{ employee.managerId ?? 'Not assigned' }}
+            </p>
+
+            <button
+              type="button"
+              class="remove-button"
+              (click)="removeEmployee(employee.id)"
+            >
+              Remove Employee
+            </button>
+
+          </div>
+
+        </article>
+
+      } @empty {
+
+        <div class="empty-state">
+          <h3>No employees found</h3>
+          <p>Try changing your search or add a new employee.</p>
+        </div>
+
+      }
+
+    </div>
+
+  </section>
+
+</div>
