@@ -2,13 +2,11 @@ import { OnInit, Component, computed, signal, inject, effect } from '@angular/co
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 
-import { SalaryRangePipe } from '../../pipes/salary-range-pipe';
 import { Employee } from '../../models/employee/employee-module';
 import { EmployeeServices } from '../../services/employee';
-import { max } from 'rxjs';
 
 @Component({
-  imports: [FormsModule, CurrencyPipe, TitleCasePipe, SalaryRangePipe],
+  imports: [FormsModule, CurrencyPipe, TitleCasePipe],
   selector: 'app-dashboard',
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
@@ -16,11 +14,11 @@ import { max } from 'rxjs';
 
 export class Dashboard {
 
- searchText = signal('');
-  employeeCount = computed(() => this.EmpList().length);
-   private employeeServices = inject(EmployeeServices); //Which Object it creates?
-   EmpList = this.employeeServices.employees;
-  filteredEmployees = computed(() => this.EmpList().filter(emp => emp.name.toLowerCase().includes(this.searchText().toLowerCase())));
+    searchText = signal('');
+    employeeCount = computed(() => this.EmpList().length);
+    private employeeServices = inject(EmployeeServices); //Which Object it creates?
+    EmpList = this.employeeServices.employees;
+    filteredEmployees = computed(() => this.EmpList().filter(emp => emp.name.toLowerCase().includes(this.searchText().toLowerCase())));
 
   newEmployee: Employee = {
     "id": 0,
