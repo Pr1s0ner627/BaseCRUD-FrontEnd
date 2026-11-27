@@ -4,7 +4,7 @@ import { CurrencyPipe, TitleCasePipe, NgIf } from '@angular/common';
 
 import { Employee } from '../../models/employee/employee-module';
 import { EmployeeServices } from '../../services/employee';
-import { error } from 'console';
+
 
 @Component({
   imports: [FormsModule, CurrencyPipe, TitleCasePipe, NgIf],

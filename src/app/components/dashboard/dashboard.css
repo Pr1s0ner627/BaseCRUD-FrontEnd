@@ -1,33 +1,171 @@
-.employee-info {
+
+.dashboard-container {
+  padding: 28px;
+  background: #f4f6fa;
+  min-height: 100vh;
+}
+
+.dashboard-header,
+.employee-card-header,
+.employee-actions,
+.form-actions {
   display: flex;
-  list-style-type: none;
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
 }
 
-.active {
-  color: green;
-  font-weight: bold;
+.dashboard-header {
+  margin-bottom: 24px;
 }
 
-.leave {
-  color: orange;
-  font-weight: bold;
+.dashboard-header h1,
+.employee-card h3,
+.employee-form-card h2,
+.employee-list-section h2 {
+  color: #1f2937;
 }
 
-.resigned {
-  color: red;
-  font-weight: bold;
+.dashboard-header p {
+  color: #6b7280;
+}
+
+.employee-count,
+.employee-form-card,
+.employee-card {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.employee-count {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.employee-count strong {
+  font-size: 26px;
+}
+
+.search-section {
+  margin-bottom: 24px;
+}
+
+.search-section input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.employee-form-card {
+  margin-bottom: 30px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 11px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+}
+
+.form-actions {
+  justify-content: flex-start;
+  margin-top: 22px;
 }
 
 button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-actions button,
+.edit-button {
+  background: #2563eb;
+  color: white;
+}
+
+.cancel-button {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.employee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.employee-card-header {
+  align-items: flex-start;
+}
+
+.employee-card-header h3 {
+  margin: 0 0 5px;
+}
+
+.employee-card-header span {
+  color: #6b7280;
+}
+
+.status {
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #fee2e2;
+  color: #991b1b;
   font-size: 12px;
-  height: 30px;
-  width: 80px;
-  background-color: crimson;
-  color: whitesmoke;
-  margin: 20px;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.employee-details {
+  margin: 18px 0;
+  font-size: 14px;
+}
+
+.employee-actions {
+  justify-content: flex-start;
+}
+
+.delete-button {
+  background: #dc2626;
+  color: white;
+}
+
+.form-message {
+  margin-top: 14px;
+}
+
+@media (max-width: 650px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-container {
+    padding: 16px;
+  }
 }

@@ -1,12 +1,18 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { inject } from "@angular/core/primitives/di";
+import { inject } from "@angular/core";
 import { Observable } from "rxjs";
 
 export interface RegisterRequest {
   email: string;
   password: string;
   displayName: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  token?: string;
+  userId?: string;
 }
 
 @Injectable({ providedIn: 'root' })

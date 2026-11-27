@@ -1,104 +1,101 @@
 
-<div class="employee-page">
+<div class="dashboard-container">
 
-  <!-- Page Header -->
-  <header class="page-header">
+  <header class="dashboard-header">
     <div>
-      <h1>Employee Management</h1>
-      <p>Manage your employee directory and records.</p>
+      <h1>Employee Dashboard</h1>
+      <p>Manage your employee records</p>
     </div>
 
-    <div class="employee-total">
-      <span>Total Employees: </span>
+    <div class="employee-count">
+      <span>Total Employees</span>
       <strong>{{ employeeCount() }}</strong>
     </div>
   </header>
 
-  <!-- Add Employee Form -->
-  <section class="add-employee">
-    <h2>Add New Employee</h2>
+  <!-- Search -->
+  <section class="search-section">
+    <input
+      type="text"
+      placeholder="Search employees by name..."
+      [ngModel]="searchText()"
+      (ngModelChange)="searchText.set($event)"
+    />
+  </section>
 
-    <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
+  <!-- Employee Form -->
+  <section class="employee-form-card">
+    <h2>
+      {{ editingEmployeeId !== null ? 'Edit Employee' : 'Add Employee' }}
+    </h2>
+
+    <form #employeeForm="ngForm">
 
       <div class="form-grid">
 
         <div class="form-group">
-          <label for="employeeName">Employee Name</label>
+          <label>Employee Name</label>
           <input
-            id="employeeName"
             type="text"
             name="name"
             [(ngModel)]="newEmployee.name"
-            placeholder="Enter employee name"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="employeeEmail">Email Address</label>
+          <label>Email</label>
           <input
-            id="employeeEmail"
             type="email"
             name="email"
             [(ngModel)]="newEmployee.email"
-            placeholder="Enter email address"
             required
-            email
           />
         </div>
 
         <div class="form-group">
-          <label for="designation">Designation</label>
+          <label>Designation</label>
           <input
-            id="designation"
             type="text"
             name="designation"
             [(ngModel)]="newEmployee.designation"
-            placeholder="Enter designation"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="salary">Salary (₹)</label>
+          <label>Salary</label>
           <input
-            id="salary"
             type="number"
             name="salary"
             [(ngModel)]="newEmployee.salary"
-            placeholder="Enter salary"
+            min="0"
             required
-            min="1"
           />
         </div>
 
         <div class="form-group">
-          <label for="departmentId">Department ID</label>
+          <label>Department ID</label>
           <input
-            id="departmentId"
             type="number"
             name="departmentId"
             [(ngModel)]="newEmployee.departmentId"
-            min="1"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="managerId">Manager ID</label>
+          <label>Manager ID</label>
           <input
-            id="managerId"
             type="number"
             name="managerId"
             [(ngModel)]="newEmployee.managerId"
-            min="1"
           />
         </div>
 
         <div class="form-group">
-          <label for="isActive">Employment Status</label>
+          <label>Employment Status</label>
           <select
-            id="isActive"
             name="isActive"
             [(ngModel)]="newEmployee.isActive"
           >
@@ -110,115 +107,89 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" [disabled]="employeeForm.invalid">
-          Add Employee
+        <button
+          type="button"
+          (click)="editingEmployeeId !== null ? saveEmployee() : addEmployee()"
+          [disabled]="employeeForm.invalid"
+        >
+          {{ editingEmployeeId !== null ? 'Save Changes' : 'Add Employee' }}
         </button>
+
+        @if (editingEmployeeId !== null) {
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="cancelEdit()"
+          >
+            Cancel
+          </button>
+        }
       </div>
+
+      @if (formMessage) {
+        <p class="form-message">{{ formMessage }}</p>
+      }
 
     </form>
-
-    @if (formMessage) {
-      <p class="form-message">{{ formMessage }}</p>
-    }
   </section>
 
-  <!-- Employee Directory -->
-  <section class="dashboard">
+  <!-- Employee List -->
+  <section class="employee-list-section">
 
-    <div class="directory-header">
-      <div>
-        <h2>Employee Directory</h2>
-        <p>View and manage registered employees.</p>
-      </div>
+    <h2>Employees</h2>
 
-      <input
-        type="search"
-        name="searchText"
-        [ngModel]="searchText()"
-        (ngModelChange)="searchText.set($event)"
-        placeholder="Search by employee name..."
-      />
-    </div>
-
-    <!-- Employee Cards -->
-    <div class="employee-list">
+    <div class="employee-grid">
 
       @for (employee of filteredEmployees(); track employee.id) {
 
         <article class="employee-card">
 
-          <div class="employee-info">
-
-            <div class="employee-heading">
+          <div class="employee-card-header">
+            <div>
               <h3>{{ employee.name | titlecase }}</h3>
-
-              <span
-                class="status"
-                [class.active]="employee.isActive"
-                [class.inactive]="!employee.isActive"
-              >
-                {{ employee.isActive ? 'Active' : 'Inactive' }}
-              </span>
+              <span>{{ employee.designation }}</span>
             </div>
 
-            <p class="designation">{{ employee.designation }}</p>
+            <span
+              class="status"
+              [class.active]="employee.isActive"
+            >
+              {{ employee.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
 
-            <p>
-              <strong>Employee ID:</strong>
-              {{ employee.id }}
-            </p>
+          <div class="employee-details">
+            <p><strong>Email:</strong> {{ employee.email }}</p>
+            <p><strong>Salary:</strong> {{ employee.salary | currency:'INR' }}</p>
+            <p><strong>Department:</strong> {{ employee.departmentId }}</p>
+            <p><strong>Manager:</strong> {{ employee.managerId ?? 'Not assigned' }}</p>
+          </div>
 
-            <p>
-              <strong>Email:</strong>
-              {{ employee.email }}
-            </p>
-
-            <p>
-              <strong>Salary:</strong>
-              {{ employee.salary | currency:'INR':'symbol':'1.0-0' }}
-            </p>
-
-            <p>
-              <strong>Department ID:</strong>
-              {{ employee.departmentId }}
-            </p>
-
-            <p>
-              <strong>Manager ID:</strong>
-              {{ employee.managerId ?? 'Not assigned' }}
-            </p>
+          <div class="employee-actions">
+            <button
+              type="button"
+              class="edit-button"
+              (click)="editEmployee(employee.id)"
+            >
+              Edit Data
+            </button>
 
             <button
               type="button"
-              class="remove-button"
-              (click)="editingEmployeeId !== null ? saveEmployee(): addEmployee() ">
-              {{editingEmployeeId !== null ? 'Save Changes': 'Add Employee'}} 
+              class="delete-button"
+              (click)="removeEmployee(employee.id)"
+            >
+              Delete
             </button>
-
-            <button *ngIf="editingEmployeeId!== null" type="button" (click)="cancelEdit()">Cancel</button>
-            
-            <button
-              type="button"
-              class="remove-button"
-              (click)="removeEmployee(employee.id)">
-              Remove
-            </button>
-
           </div>
 
         </article>
 
       } @empty {
-
-        <div class="empty-state">
-          <h3>No employees found</h3>
-          <p>Try changing your search or add a new employee.</p>
-        </div>
-
+        <p>No employees found.</p>
       }
 
     </div>
-
   </section>
 
 </div>
