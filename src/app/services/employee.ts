@@ -15,7 +15,7 @@ export class EmployeeServices {
   private apiURL = `${environment.apiUrl}/Employee`;
 
   private employeeList = signal<Employee[]>([]);
-
+  
   employees = this.employeeList.asReadonly();
 
   setEmployees(employees: Employee[]): void {
@@ -26,11 +26,18 @@ export class EmployeeServices {
     return this.http.get<Employee[]>(`${this.apiURL}/GetAll`);
   }
 
+  getEmployeeById(id: number): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`${this.apiURL}/${id}`);
+  }
+
+  updateEmployee(id: number, employee: Employee): Observable<void> {
+    return this.http.put<void>(`${this.apiURL}/${id}`, employee);
+  }
+
   addEmployee(employee: Employee): boolean {
     if (this.employeeList().some(emp => emp.email === employee.email)) {
       return false;
     }
-
     this.employeeList.update(employees => [...employees, employee]);
     return true;
   }
